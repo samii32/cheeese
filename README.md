@@ -22,4 +22,16 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
 # cheeese
+
+
+
+when not working in web, (err msg: require is not defined )
+
+try to  this cli commend
+
+```bash
+vue add electron-builder
+```
+
