@@ -122,8 +122,8 @@ export default new Vuex.Store({
         var img = document.createElement('img')
         img.classList.add('c_img')
         img.src = require('@/assets/cheese.png')
-
-        if (lastchat.classList[0] === curClass) {
+        console.log(lastchat)
+        if (lastchat !== null && lastchat.classList[0] === curClass) {
           // 같은 사람이 한 말이라면
           // 이미지 없애주어야함.
           img.style.opacity = 0
@@ -148,7 +148,7 @@ export default new Vuex.Store({
       div2Div2.classList.add('c_content')
       div2Div2.innerHTML = tmp.txt
       // 같은 사람이면 이름 표시 안한다.
-      if (lastchat.classList[0] !== curClass) {
+      if (lastchat !== null && lastchat.classList[0] !== curClass) {
         div2.appendChild(div2Div)
       }
       pre.appendChild(div2Div2)
@@ -171,7 +171,7 @@ export default new Vuex.Store({
       div.appendChild(span)
 
       // 바로 마지막말이 같은 시간인지 확인
-      if (lastchat.classList[0] === curClass && lastchat.lastChild.textContent === t) {
+      if (lastchat !== null && lastchat.classList[0] === curClass && lastchat.lastChild.textContent === t) {
         lastchat.lastChild.textContent = ''
       }
 

@@ -24,7 +24,7 @@
       id="scrolling-techniques-5"
     >
   <div class="c_over" id='conversation'>
-    <div class="someone c_dflex">
+    <!-- <div class="someone c_dflex">
         <img class="c_img" src="@/assets/cheese.png">
         <div>
           <div class="c_nm">{{this.nk}}</div>
@@ -33,13 +33,11 @@
         <span class="time">오후 5:45</span>
     </div>
     <div class="me c_dflex_reverse">
-      <!-- <img class="c_img" src="@/assets/cheese.png"> -->
       <div>
-        <!-- <div class="c_nm">me</div> -->
       <div class="c_content">안녕하세요 안녕하세요 호호...</div>
       </div>
       <span class="time">오후 5:45</span>
-    </div>
+    </div> -->
   </div>
     </v-sheet>
     <v-app-bar
@@ -283,5 +281,8 @@ align-self: flex-start;
 }
 .me>div>.c_nm{
   text-align: right;
+}
+pre {
+ margin-bottom: 0px;
 }
 </style>
