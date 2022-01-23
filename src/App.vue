@@ -41,7 +41,7 @@
             </v-list-item>
           </v-list>
         </v-navigation-drawer>
-        <v-main>
+        <v-main id="mymain">
           <div>
           <router-view/>
           </div>
@@ -53,8 +53,6 @@
 
 <script>
 import { mapMutations } from 'vuex'
-// const { ipcRenderer } = require('electron')
-
 export default {
   name: 'App',
 
@@ -71,7 +69,7 @@ export default {
   methods: {
     ...mapMutations(['setshow']),
     close () {
-      // ipcRenderer.send('close')
+      console.log('ccloseee')
     },
     minimize () {
       // ipcRenderer.send('minimize')
@@ -98,10 +96,13 @@ export default {
   watch: {
     $route: function (to, from) {
       this.setshow(to.path)
-      if (to.path === '/' || to.path === '/signup') {
+      if (to.path === '/' || to.path === '/signup' || to.path === '/userpopup') {
         console.log('home.vue, path:' + to.path)
+        document.getElementById('mymain').style = 'width:100%'
       } else {
         console.log('here:' + to.path)
+        var mywidth = "calc(100% - 70px)";
+        document.getElementById('mymain').style.width = mywidth
       }
 
       if (to.path === '/talk') {
@@ -142,7 +143,9 @@ html{
   -webkit-app-region: no-drag;
 }
 .title>span:hover{
-  background-color:white;
+  background-color: lightgray;
 }
-
+.modal-dialog{
+  width:60%;
+}
 </style>

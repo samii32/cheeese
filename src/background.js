@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -23,7 +23,8 @@ async function createWindow () {
       // nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       // contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
+      enableRemoteModule: true
     }
   })
 
@@ -82,3 +83,18 @@ if (isDevelopment) {
     })
   }
 }
+
+// ipcMain에서의 이벤트 수신
+ipcMain.on('close', (evt) => {
+  console.log('ccc')
+  BrowserWindow.getFocusedWindow().close()
+})
+ipcMain.on('minimize', (evt) => {
+  BrowserWindow.getFocusedWindow().minimize()
+})
+ipcMain.on('maximize', (evt) => {
+  BrowserWindow.getFocusedWindow().maximize()
+})
+ipcMain.on('unmaximize', (evt) => {
+  BrowserWindow.getFocusedWindow().unmaximize()
+})

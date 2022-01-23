@@ -2,7 +2,9 @@
 <div>
   <div>
     <v-list>
-        <v-subheader>Friends</v-subheader>
+        <v-subheader>Friends
+          <button @click="setModal"><v-icon>mdi-plus</v-icon></button>
+        </v-subheader>
         <v-list-item link >
         <v-list-item-title class="vlist">
           <div class="vertical_mid">
@@ -30,10 +32,10 @@
               :key="idx"
               link
             >
-            <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1,openPop('Talk',people,idx)" style="cursor:default">
+            <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1,openPop('Talk',people,'Talk'+idx)" style="cursor:default">
               <div class="vertical_mid">
                 <img class="img"
-                src="@/assets/cheese.png" @click="openPop('UserPopup',people,idx)" style="cursor:pointer">
+                src="@/assets/cheese.png" @click="openPop('UserPopup',people,'UserPopup'+idx)" style="cursor:pointer">
                 <span>
                 {{people.nick}}
                 </span>
@@ -41,20 +43,39 @@
               </v-list-item-title>
             </v-list-item>
         </v-list>
+        <b-modal v-model="$store.state.modalShow" title="Add Friends" hide-footer>
+          <Modal/>
+        </b-modal>
   </v-list-group>
+      <!-- 컴포넌트 MyModal
+    <Modal @close="closeModal" v-if="modal">
+      
+      <p>Vue.js Modal Window!</p>
+      <div><input v-model="message"></div>
+      
+      
+      <template slot="footer">
+        <button @click="doSend">제출</button>
+      </template>
+    </Modal>-->
 </div>
 </template>
 <script>
+import Modal from '../components/Modal.vue'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'Peoples',
   components: {
+    Modal
   },
   data: () => ({
+    message: 'hi',
     cnt: 0,
     me: {
       nick: '봉골골',
-      msg: 'happy'
+      msg: 'happy',
+      modal: false
     },
     peoples: [
       {
@@ -77,9 +98,31 @@ export default {
     }
   },
   methods: {
-    openPop: function (path, people, idx) {
+    ...mapMutations(['togglemodalShow']),
+    openPop: function (path, people, nm) {
       const routeData = this.$router.resolve({ name: path, query: { nick: people.nick, msg: people.msg } })
-      window.open(routeData.href, idx, ['width=400', 'heigth=600', 'left=2000', 'top=200', 'scrollbars = no', 'menubar=no', 'toolbar=no', 'frame=false'])
+      window.open(routeData.href, nm, ['width=400', 'heigth=600', 'left=2000', 'top=200', 'scrollbars = no', 'menubar=no', 'toolbar=no', 'frame=false'])
+    },
+    setModal: function () {
+      this.togglemodalShow()
+    },
+    addUser: function (){
+      console.log('a')
+    },
+    openModal() {
+      this.modal = true
+    },
+    closeModal() {
+      this.modal = false
+    },
+    doSend() {
+      if (this.message.length > 0) {
+        alert(this.message)
+        this.message = ''
+        this.closeModal()
+      } else {
+        // alert('메시지를 입력해주세요.')
+      }
     }
   }
 }

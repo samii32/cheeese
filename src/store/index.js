@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     txt: 'aa',
     show: false,
+    modalShow: false,
     user:
     {
       id: '', pw: ''
@@ -24,6 +25,9 @@ export default new Vuex.Store({
       } else {
         state.show = true
       }
+    },
+    togglemodalShow(state) {
+      state.modalShow = !state.modalShow
     },
     setId (state, id) {
       console.log('setId:' + id)
@@ -96,8 +100,9 @@ export default new Vuex.Store({
         if (lastchat.classList[0] === curClass) {
           // 같은 사람이 한 말이라면
           // 이미지 없애주어야함.
-          img.src = require('@/assets/transparent.png')
+          img.style.opacity = 0
           img.style.backgroundColor = 'transparent'
+          
         }
 
         div.appendChild(img)

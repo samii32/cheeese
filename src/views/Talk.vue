@@ -46,7 +46,7 @@
       style="position:fixed; bottom:0px; height:120px">
       <!-- <div class="dflex"> -->
       <div style="width:100%; height:120px; display:flex; align-items:end; padding:10px;">
-        <textarea id="txt" style="width:100%;height:100%;" v-model="mytxt" @keypress="valid_enter" @keyup="test"></textarea>
+        <textarea id="txt" style="width:100%;height:100%;" v-model="mytxt" @keypress="valid_enter" @keyup="clear_txt"></textarea>
       </div>
       <div style="width:110px;"><v-btn @click="send('me',mytxt)" height="95" color="#d6d6d6">Send</v-btn></div>
       <!-- </div> -->
@@ -79,9 +79,11 @@ export default {
       var tagId = document.getElementById('conversation')
       tagId.scrollTop = tagId.scrollHeight
     },
-    test: function () {
+    clear_txt: function (e) {
       console.log(this.mytxt[0])
-      if (this.mytxt[0] === '/n') {
+      if (e.shiftKey && e.key === 'Enter') {
+        console.log('shift+enter')
+      } else if (e.key === 'Enter') {
         this.mytxt = ''
       }
     },
@@ -104,6 +106,27 @@ export default {
   },
   mounted: function () {
     document.getElementById('min').style.color = 'white'
+    document.getElementById('max').style.color = 'white'
+    document.getElementById('close').style.color = 'white'
+    document.getElementById('max').onmouseover = function () {
+      this.style = 'color:red'
+      console.log(this.style)
+    }
+    document.getElementById('max').onmouseout = function () {
+      this.style = 'color:white'
+    }
+    document.getElementById('min').onmouseover = function () {
+      this.style = 'color:red;background-color:white'
+    }
+    document.getElementById('min').onmouseout = function () {
+      this.style = 'color:white'
+    }
+    document.getElementById('close').onmouseover = function () {
+      this.style = 'color:red;background-color:white'
+    }
+    document.getElementById('close').onmouseout = function () {
+      this.style = 'color:white'
+    }
   }
 }
 </script>
