@@ -47,17 +47,6 @@
           <Modal/>
         </b-modal>
   </v-list-group>
-      <!-- 컴포넌트 MyModal
-    <Modal @close="closeModal" v-if="modal">
-      
-      <p>Vue.js Modal Window!</p>
-      <div><input v-model="message"></div>
-      
-      
-      <template slot="footer">
-        <button @click="doSend">제출</button>
-      </template>
-    </Modal>-->
 </div>
 </template>
 <script>
@@ -106,16 +95,16 @@ export default {
     setModal: function () {
       this.togglemodalShow()
     },
-    addUser: function (){
+    addUser: function () {
       console.log('a')
     },
-    openModal() {
+    openModal () {
       this.modal = true
     },
-    closeModal() {
+    closeModal () {
       this.modal = false
     },
-    doSend() {
+    doSend () {
       if (this.message.length > 0) {
         alert(this.message)
         this.message = ''

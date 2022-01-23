@@ -2,28 +2,46 @@
   <div>
     <div class="d-flex justify-content-between" >
       <b-input-group size="sm" prepend="ID">
-        <v-text-field label="friend id" v-model="FriendID" style="padding:0; margin:3px 0 0 2px;">
+        <v-text-field label="friend id" v-model="user.id" style="padding:0; margin:3px 0 0 2px;">
         </v-text-field>
-      <b-input-group-append>
-        <b-button size="m" style="margin-left:5px;" text="Button" variant="success">Search</b-button>
-      </b-input-group-append>
-    </b-input-group>
+        <b-input-group-append>
+          <b-button size="m" style="margin-left:5px;" text="Button" @click="search">Search</b-button>
+        </b-input-group-append>
+      </b-input-group>
     </div>
-    <div>
-    <b-button style="float: right;" class="mt-3" block @click="$store.state.modalShow=!$store.state.modalShow">Add</b-button>
+    <div id="content">
     </div>
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'Modal',
   data: () => ({
-    FriendID: ''
-  })
+    user: { id: '', age: '' }
+  }),
+  methods: {
+    ...mapActions(['addUser']),
+    search () {
+      this.addUser(this.user)
+    }
+  }
 }
 </script>
 
-<style scoped>
+<style>
+.m_img{
+max-width:100%; max-height:100%;
+display:inline-block;
+vertical-align:middle;
+width:100px;
+height:100px;
+border-radius:50%;
+background-color:gray;
+}
+.m_friendId{
+  margin:15px 0 0 0;
+}
 /*
 .modal>.modal-overlay {
     display: flex;

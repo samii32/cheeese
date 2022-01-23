@@ -2,7 +2,7 @@
   <div>
     <div class="title">
       <span @click="minimize" id="min">&minus;</span>
-      <span @click="maximize" id="max">&EmptySmallSquare;</span>
+      <span @click="maximize" id="max">&#x025fb;</span>
       <span @click="close" id="close">&#10005;</span>
     </div>
     <v-navigation-drawer
@@ -53,6 +53,8 @@
 
 <script>
 import { mapMutations } from 'vuex'
+// const electron = window.require('electron')
+
 export default {
   name: 'App',
 
@@ -69,18 +71,18 @@ export default {
   methods: {
     ...mapMutations(['setshow']),
     close () {
-      console.log('ccloseee')
+      // electron.ipcRenderer.send('close')
     },
     minimize () {
-      // ipcRenderer.send('minimize')
+      // electron.ipcRenderer.send('minimize')
     },
     maximize () {
       if (this.maxi) {
         this.maxi = false
-        // ipcRenderer.send('unmaximize')
+        // electron.ipcRenderer.send('unmaximize')
       } else {
         this.maxi = true
-        // ipcRenderer.send('maximize')
+        // electron.ipcRenderer.send('maximize')
       }
     }
   },
@@ -99,9 +101,9 @@ export default {
       if (to.path === '/' || to.path === '/signup' || to.path === '/userpopup') {
         console.log('home.vue, path:' + to.path)
         document.getElementById('mymain').style = 'width:100%'
-      } else {
+      } else if (to.path === '/peoples') {
         console.log('here:' + to.path)
-        var mywidth = "calc(100% - 70px)";
+        var mywidth = 'calc(100% - 70px)'
         document.getElementById('mymain').style.width = mywidth
       }
 

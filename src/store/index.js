@@ -80,6 +80,32 @@ export default new Vuex.Store({
       state.user.id = ''
       state.user.pw = ''
     },
+    addUser ({ state, commit }, user) {
+      var content = document.querySelector('#content')
+      content.innerHTML = ''
+      console.log('addUser')
+      console.log(user)
+      var div = document.createElement('div')
+      div.classList.add('d-flex', 'flex-column', 'justify-content-center', 'align-items-center')
+      var img = document.createElement('img')
+      img.classList.add('m_img')
+      img.src = require('@/assets/cheese.png')
+      var span = document.createElement('span')
+      span.classList.add('m_friendId')
+      span.innerHTML = user.id
+
+      var btn = document.createElement('button')
+      btn.classList.add('mt-3', 'btn', 'btn-success')
+      btn.onclick = function () {
+        state.modalShow = !state.modalShow
+      }
+      btn.innerHTML = 'Add'
+      div.appendChild(img)
+      div.appendChild(span)
+      div.appendChild(btn)
+
+      content.appendChild(div)
+    },
     addChat ({ state, commit }, tmp) {
       // 가장 마지막에있는 div가져옴.
       var lastchat = document.getElementById('conversation').lastChild
@@ -102,7 +128,6 @@ export default new Vuex.Store({
           // 이미지 없애주어야함.
           img.style.opacity = 0
           img.style.backgroundColor = 'transparent'
-          
         }
 
         div.appendChild(img)
@@ -151,8 +176,6 @@ export default new Vuex.Store({
       }
 
       div.scrollTop = div.scrollHeight
-      console.log(div)
-      console.log(div.scrollHeight)
     }
   },
   modules: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div class="">
     <v-app-bar
       color="#43a047"
       dark
@@ -108,24 +108,24 @@ export default {
     document.getElementById('min').style.color = 'white'
     document.getElementById('max').style.color = 'white'
     document.getElementById('close').style.color = 'white'
+
     document.getElementById('max').onmouseover = function () {
-      this.style = 'color:red'
-      console.log(this.style)
+      this.style = 'color:red;background-color:white;'
     }
     document.getElementById('max').onmouseout = function () {
-      this.style = 'color:white'
+      this.style = 'color:white;'
     }
     document.getElementById('min').onmouseover = function () {
       this.style = 'color:red;background-color:white'
     }
     document.getElementById('min').onmouseout = function () {
-      this.style = 'color:white'
+      this.style = 'color:white;'
     }
     document.getElementById('close').onmouseover = function () {
       this.style = 'color:red;background-color:white'
     }
     document.getElementById('close').onmouseout = function () {
-      this.style = 'color:white'
+      this.style = 'color:white;'
     }
   }
 }
