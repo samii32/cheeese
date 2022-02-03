@@ -16,7 +16,57 @@ export default new Vuex.Store({
     info:
     {
       id: '', pw: '', pw2: ''
-    }
+    },
+    friends: [{
+      nick: 'cathy',
+      msg: '행복해fghfhg'
+    },
+    {
+      nick: 'jake',
+      msg: 'joyfulghhjgj'
+    },
+    {
+      nick: 'sam',
+      msg: '삼인행필유아사fghfgh'
+    },
+    {
+      nick: 'cathy',
+      msg: '행복해fghfhg'
+    },
+    {
+      nick: 'jake',
+      msg: 'joyfulghhjgj'
+    },
+    {
+      nick: 'sam',
+      msg: '삼인행필유아사fghfgh'
+    },
+    {
+      nick: 'cathy',
+      msg: '행복해fghfhg'
+    },
+    {
+      nick: 'jake',
+      msg: 'joyfulghhjgj'
+    },
+    {
+      nick: 'sam',
+      msg: '삼인행필유아사fghfgh'
+    },
+    {
+      nick: 'cathy',
+      msg: '행복해fghfhg'
+    },
+    {
+      nick: 'jake',
+      msg: 'joyfulghhjgj'
+    },
+    {
+      nick: 'sam',
+      msg: '삼인행필유아사fghfgh'
+    }],
+    openwins: [
+    ]
   },
   mutations: {
     setshow (state, path) {
@@ -80,11 +130,9 @@ export default new Vuex.Store({
       state.user.id = ''
       state.user.pw = ''
     },
-    addUser ({ state, commit }, user) {
+    foundUser ({ state, commit }, user) {
       var content = document.querySelector('#content')
       content.innerHTML = ''
-      console.log('addUser')
-      console.log(user)
       var div = document.createElement('div')
       div.classList.add('d-flex', 'flex-column', 'justify-content-center', 'align-items-center')
       var img = document.createElement('img')
@@ -98,6 +146,7 @@ export default new Vuex.Store({
       btn.classList.add('mt-3', 'btn', 'btn-success')
       btn.onclick = function () {
         state.modalShow = !state.modalShow
+        state.friends.push({ nick: user.id, msg: user.msg })
       }
       btn.innerHTML = 'Add'
       div.appendChild(img)
@@ -176,6 +225,23 @@ export default new Vuex.Store({
       }
 
       div.scrollTop = div.scrollHeight
+    },
+    addWin ({ state, commit }, winnm) {
+      state.openwins.push({ id: winnm })
+      // console.log(state.openwins)
+    },
+    removeWin ({ state, commit }, winnm) {
+      const i = state.openwins.map(item => item.id).indexOf(winnm)
+      state.openwins.splice(i, 1)
+    },
+    isExistWin ({ state, commit }, winnm) {
+      state.openwins.forEach(element => {
+        console.log(element)
+        if (element.id === winnm) {
+          return true
+        }
+        return false
+      })
     }
   },
   modules: {

@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-// const electron = window.require('electron')
+import { mapActions, mapMutations } from 'vuex'
+const electron = window.require('electron')
 
 export default {
   name: 'App',
@@ -70,11 +70,14 @@ export default {
   ),
   methods: {
     ...mapMutations(['setshow']),
+    ...mapActions(['addWin', 'removeWin']),
     close () {
+      console.log(window.document.URL)
+      // electron.ipcRenderer.send('getCurrentWin')
       // electron.ipcRenderer.send('close')
     },
     minimize () {
-      // electron.ipcRenderer.send('minimize')
+      electron.ipcRenderer.send('minimize')
     },
     maximize () {
       if (this.maxi) {
@@ -148,6 +151,8 @@ html{
   background-color: lightgray;
 }
 .modal-dialog{
-  width:60%;
+  margin:auto;
+  min-width: 340px;
+  max-width: 400px;
 }
 </style>

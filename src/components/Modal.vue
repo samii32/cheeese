@@ -2,10 +2,10 @@
   <div>
     <div class="d-flex justify-content-between" >
       <b-input-group size="sm" prepend="ID">
-        <v-text-field label="friend id" v-model="user.id" style="padding:0; margin:3px 0 0 2px;">
+        <v-text-field id='fid' label="friend id" @keyup.enter="enter" v-model="user.id" style="padding:0; margin:3px 0 0 2px;">
         </v-text-field>
         <b-input-group-append>
-          <b-button size="m" style="margin-left:5px;" text="Button" @click="search">Search</b-button>
+          <b-button size="m" style="margin-left:5px; background-color:#e9ecef; border: 1px solid #ced4da" text="Button" @click="search">Search</b-button>
         </b-input-group-append>
       </b-input-group>
     </div>
@@ -18,13 +18,24 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Modal',
   data: () => ({
-    user: { id: '', age: '' }
+    user: { id: '', msg: '' }
   }),
   methods: {
-    ...mapActions(['addUser']),
+    ...mapActions(['foundUser', 'addUser']),
     search () {
-      this.addUser(this.user)
+      if (this.user.id !== '') {
+        console.log('id있음')
+        this.foundUser(this.user)
+      } else {
+        console.log('id없음')
+      }
+    },
+    enter () {
+      this.search()
     }
+  },
+  mounted: function () {
+
   }
 }
 </script>

@@ -26,9 +26,9 @@
         <v-list-item-title>Friends {{cnt_friends}}</v-list-item-title>
       </v-list-item-content>
     </template>
-        <v-list>
+        <v-list class="scroll">
             <v-list-item
-              v-for="(people, idx) in peoples"
+              v-for="(people, idx) in $store.state.friends"
               :key="idx"
               link
             >
@@ -51,7 +51,8 @@
 </template>
 <script>
 import Modal from '../components/Modal.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
+const electron = window.require('electron')
 
 export default {
   name: 'Peoples',
@@ -65,38 +66,36 @@ export default {
       nick: '봉골골',
       msg: 'happy',
       modal: false
-    },
-    peoples: [
-      {
-        nick: 'cathy',
-        msg: '행복해'
-      },
-      {
-        nick: 'jake',
-        msg: 'joyful'
-      },
-      {
-        nick: 'sam',
-        msg: '삼인행필유아사'
-      }
-    ]
+    }
   }),
   computed: {
     cnt_friends () {
-      return this.peoples.length
+      return this.$store.state.friends.length
     }
   },
   methods: {
     ...mapMutations(['togglemodalShow']),
+    ...mapActions(['addWin', 'removeWin', 'isExistWin']),
     openPop: function (path, people, nm) {
       const routeData = this.$router.resolve({ name: path, query: { nick: people.nick, msg: people.msg } })
-      window.open(routeData.href, nm, ['width=400', 'heigth=600', 'left=2000', 'top=200', 'scrollbars = no', 'menubar=no', 'toolbar=no', 'frame=false'])
+      var alreadyOpen = electron.ipcRenderer.sendSync('alreadyOpen', nm)
+      console.log(routeData)
+      console.log('alreadyOpen:' + alreadyOpen)
+      if (!alreadyOpen[0]) {
+        var i = alreadyOpen[1] - 1
+        var left = 200
+        var top = 200
+        var nleft = left + (i % 5 * 30) + (parseInt(i / 5) * 15)
+        var nTop = top + (i % 5 * 30) - (parseInt(i / 5) * 15)
+        window.open(routeData.href, nm, ['width=400', 'heigth=600', 'left=' + nleft, 'top=' + nTop, 'scrollbars = no', 'menubar=no', 'toolbar=no'])
+        electron.ipcRenderer.send('setTitle', nm)
+      } else {
+        console.log('이미 열려있습니당')
+        // 열린창을 포커스 맞추기
+      }
     },
     setModal: function () {
       this.togglemodalShow()
-    },
-    addUser: function () {
-      console.log('a')
     },
     openModal () {
       this.modal = true
@@ -117,6 +116,21 @@ export default {
 }
 </script>
 <style scoped>
+.scroll{
+  width: calc(100vw - 86px);
+  height: calc(100vh - 200px);
+  overflow-y: scroll;
+}
+::-webkit-scrollbar {
+  width: 10px;  /* 세로축 스크롤바 길이 */
+}
+::-webkit-scrollbar-track {
+  background-color: #f2f5f3;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #a8a594;
+}
 .container{
   margin: 0px;
 }

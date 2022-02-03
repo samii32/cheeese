@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, Remote } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -27,7 +27,11 @@ async function createWindow () {
       enableRemoteModule: true
     }
   })
-
+  win.setTitle('abc')
+  win.webContents.openDevTools()
+  win.webContents.on('did-finish-load', () => {
+    win.setTitle('Cheese Talk')
+  })
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -83,18 +87,38 @@ if (isDevelopment) {
     })
   }
 }
-
 // ipcMain에서의 이벤트 수신
 ipcMain.on('close', (evt) => {
-  console.log('ccc')
   BrowserWindow.getFocusedWindow().close()
 })
 ipcMain.on('minimize', (evt) => {
-  BrowserWindow.getFocusedWindow().minimize()
+  BrowserWindow.getFocusedWindow().openDevTools()
+  // BrowserWindow.getFocusedWindow().minimize()
 })
 ipcMain.on('maximize', (evt) => {
   BrowserWindow.getFocusedWindow().maximize()
 })
 ipcMain.on('unmaximize', (evt) => {
   BrowserWindow.getFocusedWindow().unmaximize()
+})
+ipcMain.on('setTitle', (evt, titleNm) => {
+  var mywin = BrowserWindow.getFocusedWindow()
+  mywin.webContents.on('did-finish-load', () => {
+    // console.log(titleNm)
+    // console.log(mywin)
+    mywin.setTitle(titleNm)
+  })
+})
+ipcMain.on('alreadyOpen', (evt, titleNm) => {
+  var wins = BrowserWindow.getAllWindows()
+  wins.forEach(function (win) {
+    if (titleNm === win.getTitle()) {
+      console.log(titleNm)
+      win.focus()
+      evt.returnValue = [true, wins.length]
+      return true
+    }
+  })
+  evt.returnValue = [false, wins.length]
+  return false
 })

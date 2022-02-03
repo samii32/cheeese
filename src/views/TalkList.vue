@@ -3,13 +3,13 @@
        <v-list class="grow">
         <v-subheader>Talk</v-subheader>
     </v-list>
-    <v-list>
+    <v-list class="scroll">
       <v-list-item
-        v-for="(chat, idx) in chatlist"
+        v-for="(chat, idx) in this.chatlist"
         :key="idx"
         link
       >
-        <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1,openPop('Talk',chat,idx)" style="cursor:default">
+        <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1,openPop('Talk',chat,'Talk'+idx)" style="cursor:default">
           <div class="vertical_mid" style="display:flex">
             <img class="img"
             src="@/assets/cheese.png">
@@ -40,8 +40,32 @@ export default {
     },
     chatlist: [
       {
-        nick: 'mango',
+        nick: '킴원호',
         txt: 'abc'
+      },
+      {
+        nick: 'samanda',
+        txt: 'qwer'
+      },
+      {
+        nick: 'hey',
+        txt: '심심해'
+      },
+      {
+        nick: 'samanda',
+        txt: 'qwer'
+      },
+      {
+        nick: 'hey',
+        txt: '심심해'
+      },
+      {
+        nick: 'samanda',
+        txt: 'qwer'
+      },
+      {
+        nick: 'hey',
+        txt: '심심해'
       },
       {
         nick: 'samanda',
@@ -56,7 +80,7 @@ export default {
   methods: {
     openPop: function (path, people, idx) {
       const routeData = this.$router.resolve({ name: path, query: { nick: people.nick, msg: people.msg } })
-      window.open(routeData.href, idx, 'width=400,heigth=600,left=200,top=200, scrollbars = no')
+      window.open(routeData.href, idx, 'width=400, heigth=600, left=200, top=200, scrollbars=no, frame=false')
     }
   }
 }
@@ -89,5 +113,20 @@ padding-left: 10px;
   color: gray;
   font-size: 0.8em;
   margin: 4px 0 0 1px;
+}
+.scroll{
+  width: calc(100vw - 86px);
+  height: calc(100vh - 75px);
+  overflow-y: scroll;
+}
+::-webkit-scrollbar {
+  width: 10px;  /* 세로축 스크롤바 길이 */
+}
+::-webkit-scrollbar-track {
+  background-color: #f2f5f3;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #a8a594;
 }
 </style>
