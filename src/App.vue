@@ -72,9 +72,7 @@ export default {
     ...mapMutations(['setshow']),
     ...mapActions(['addWin', 'removeWin']),
     close () {
-      console.log(window.document.URL)
-      // electron.ipcRenderer.send('getCurrentWin')
-      // electron.ipcRenderer.send('close')
+      electron.ipcRenderer.send('close')
     },
     minimize () {
       electron.ipcRenderer.send('minimize')
@@ -82,10 +80,10 @@ export default {
     maximize () {
       if (this.maxi) {
         this.maxi = false
-        // electron.ipcRenderer.send('unmaximize')
+        electron.ipcRenderer.send('unmaximize')
       } else {
         this.maxi = true
-        // electron.ipcRenderer.send('maximize')
+        electron.ipcRenderer.send('maximize')
       }
     }
   },

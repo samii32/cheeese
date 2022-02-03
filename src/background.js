@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, Remote } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, Tray, Menu } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -9,6 +9,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
+let tray = null
 
 async function createWindow () {
   // Create the browser window.
@@ -48,7 +49,7 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    app.quit()
+    // app.quit()
   }
 })
 
@@ -70,6 +71,38 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+  tray = new Tray('C:\\web\\cheeese\\cheeese\\src\\assets\\cheese.png')
+  tray.setTitle('hello world')
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'open',
+      type: 'normal',
+      checked: true,
+      click: () => {
+        var wins = BrowserWindow.getAllWindows()
+        wins.forEach(function (win) {
+          if (win.getTitle() === 'Cheese Talk') {
+            win.focus()
+            win.show()
+            return null
+          }
+        })
+      }
+    },
+    { label: 'quit', type: 'normal', click: () => { app.quit() } }
+  ])
+  tray.setToolTip('Cheese')
+  tray.setContextMenu(contextMenu)
+  tray.on('double-click', () => {
+    var wins = BrowserWindow.getAllWindows()
+    wins.forEach(function (win) {
+      if (win.getTitle() === 'Cheese Talk') {
+        win.focus()
+        win.show()
+        return null
+      }
+    })
+  })
   createWindow()
 })
 
@@ -89,11 +122,16 @@ if (isDevelopment) {
 }
 // ipcMain에서의 이벤트 수신
 ipcMain.on('close', (evt) => {
-  BrowserWindow.getFocusedWindow().close()
+  var win = BrowserWindow.getFocusedWindow()
+  if (win.getTitle() === 'Cheese Talk') {
+    win.hide()
+  } else {
+    win.close()
+  }
 })
 ipcMain.on('minimize', (evt) => {
-  BrowserWindow.getFocusedWindow().openDevTools()
-  // BrowserWindow.getFocusedWindow().minimize()
+  // BrowserWindow.getFocusedWindow().openDevTools()
+  BrowserWindow.getFocusedWindow().minimize()
 })
 ipcMain.on('maximize', (evt) => {
   BrowserWindow.getFocusedWindow().maximize()

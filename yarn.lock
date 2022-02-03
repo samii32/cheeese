@@ -939,7 +939,7 @@
     "ajv" "^6.12.0"
     "ajv-keywords" "^3.4.1"
 
-"@electron/get@^1.13.0":
+"@electron/get@^1.0.1":
   "integrity" "sha1-QqCqYv0RiWOL2WbiPv+uuxYQg2g="
   "resolved" "https://registry.npmmirror.com/@electron/get/download/@electron/get-1.13.1.tgz"
   "version" "1.13.1"
@@ -1162,10 +1162,10 @@
   "resolved" "https://registry.npmmirror.com/@types/node/download/@types/node-17.0.10.tgz"
   "version" "17.0.10"
 
-"@types/node@^14.6.2":
-  "integrity" "sha512-j11XSuRuAlft6vLDEX4RvhqC0KxNxx6QIyMXNb0vHHSNPXTPeiy3algESWmOOIzEtiEL0qiowPU3ewW9hHVa7Q=="
-  "resolved" "https://registry.npmmirror.com/@types/node/download/@types/node-14.18.9.tgz"
-  "version" "14.18.9"
+"@types/node@^12.0.12":
+  "integrity" "sha512-HCfJdaYqJX3BCzeihgZrD7b85Cu05OC/GVJ4kEYIflwUs4jbnUlLLWoq7hw1LBcdvUyehO+gr6P5JQ895/2ZfA=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-12.20.43.tgz"
+  "version" "12.20.43"
 
 "@types/normalize-package-data@^2.4.0":
   "integrity" "sha1-0zV0eaD9/dWQf+Z+F+CoXJBuEwE="
@@ -4159,13 +4159,13 @@
   "resolved" "https://registry.npmmirror.com/electron-to-chromium/download/electron-to-chromium-1.4.49.tgz"
   "version" "1.4.49"
 
-"electron@^15.3.0":
-  "integrity" "sha512-YLzaKCFmSniNlz9+NUTNs7ssPyDc+bYOCYZ0b/D6DjVkOeIFz4SR8EYKqlOc8TcqlDNu18BbWqz6zbJPyAAURg=="
-  "resolved" "https://registry.npmjs.org/electron/-/electron-15.3.0.tgz"
-  "version" "15.3.0"
+"electron@^8.2.0":
+  "integrity" "sha512-mnV43gKCrCUMHLmGws/DU/l8LhaxrFD53A4ofwtthdCqOZWGIdk1+eMphiVumXR5a3lC64XVvmXQ2k28i7F/zw=="
+  "resolved" "https://registry.npmjs.org/electron/-/electron-8.2.0.tgz"
+  "version" "8.2.0"
   dependencies:
-    "@electron/get" "^1.13.0"
-    "@types/node" "^14.6.2"
+    "@electron/get" "^1.0.1"
+    "@types/node" "^12.0.12"
     "extract-zip" "^1.0.3"
 
 "elliptic@^6.5.3":
