@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '../router'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -129,6 +130,14 @@ export default new Vuex.Store({
       commit('moveTo', 'Peoples')
       state.user.id = ''
       state.user.pw = ''
+
+      axios.post('http://localhost:3000/db', state.user).then((res) => {
+        console.log(res.data)
+      }).catch((error) => {
+        console.log(error)
+      }).finally(() => {
+        console.log('마지막')
+      })
     },
     foundUser ({ state, commit }, user) {
       var content = document.querySelector('#content')
