@@ -1,13 +1,14 @@
-<template>
+<template style="top:20px;">
   <div>
     <div class="d-flex justify-content-between" >
-      <b-input-group size="sm" prepend="ID">
+      <div>
+        <span class="btn btn-light" style="border-color:lightgray; background-color:#ededed; cursor:default;">ID</span>
+      </div>
         <v-text-field id='fid' label="friend id" @keyup.enter="enter" v-model="user.id" style="padding:0; margin:3px 0 0 2px;">
         </v-text-field>
-        <b-input-group-append>
+        <div>
           <b-button size="m" style="margin-left:5px; background-color:#e9ecef; border: 1px solid #ced4da" text="Button" @click="search">Search</b-button>
-        </b-input-group-append>
-      </b-input-group>
+        </div>
     </div>
     <div id="content">
     </div>

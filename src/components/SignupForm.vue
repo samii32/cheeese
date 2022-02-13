@@ -41,7 +41,7 @@
           class="input-group--focused"
           @click:append="show_pw = !show_pw"
         ></v-text-field>
-        <a class="signup" @click="setId('')" href='../peoples#/'>login</a>
+        <a class="signup" @click="setId('')" href='../'>login</a>
       </div>
     </v-container>
   </v-form>

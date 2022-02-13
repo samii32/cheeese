@@ -27,7 +27,7 @@
           class="input-group--focused"
           @click:append="show_pw = !show_pw"
         ></v-text-field>
-        <a class="signup" href='../peoples#/signup'>sign up</a>
+        <a class="signup" href='../signup'>sign up</a>
       </div>
     </v-container>
   </v-form>

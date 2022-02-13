@@ -9,7 +9,7 @@
         <v-list-item-title class="vlist">
           <div class="vertical_mid">
             <img class="img"
-            src="@/assets/cheese.png" @click="openPop('UserPopup',me,-1)">
+            src="@/assets/cheese.png" @click="openPop('UserPopup',me,'UserPopup-1')">
             <span>봉골골</span>
           </div>
         </v-list-item-title>
@@ -43,8 +43,8 @@
               </v-list-item-title>
             </v-list-item>
         </v-list>
-        <b-modal v-model="$store.state.modalShow" title="Add Friends" hide-footer>
-          <Modal/>
+        <b-modal v-model="$store.state.modalShow" title="Add Friends" hide-footer style="top:10px;">
+            <Modal/>
         </b-modal>
   </v-list-group>
 </div>
@@ -157,5 +157,11 @@ padding: 13px;
   vertical-align:middle;
   height:100%;
   padding: 15px 0;
+}
+
+</style>
+<style>
+.modal-dialog{
+  margin: 1.75rem auto;
 }
 </style>
