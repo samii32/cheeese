@@ -16,7 +16,7 @@ export default new Vuex.Store({
     },
     info:
     {
-      id: '', pw: '', pw2: ''
+      id: '', pw: '', email: ''
     },
     friends: [{
       nick: 'cathy',
@@ -77,7 +77,7 @@ export default new Vuex.Store({
         state.show = true
       }
     },
-    togglemodalShow(state) {
+    togglemodalShow (state) {
       state.modalShow = !state.modalShow
     },
     setId (state, id) {
@@ -85,7 +85,7 @@ export default new Vuex.Store({
       state.user.id = id
       state.info.id = ''
       state.info.pw = ''
-      state.info.pw2 = ''
+      state.info.email = ''
     },
     setPw (state, pw) {
       console.log('setPw:' + pw)
@@ -99,9 +99,18 @@ export default new Vuex.Store({
       console.log('setPw:' + pw)
       state.info.pw = pw
     },
-    setPw2_signup (state, pw2) {
-      console.log('setPw2:' + pw2)
-      state.info.pw2 = pw2
+    setEmail_signup (state, email) {
+      console.log('setEmail:' + email)
+      state.info.email = email
+      // 이메일이 정규식에 맞는지 확인
+      var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*/i
+      var btn = document.querySelector('#btn_email')
+      if (email.match(regExp) != null) {
+        console.log('올바른형식!')
+        btn.removeAttribute('disabled')
+      } else {
+        btn.setAttribute('disabled', 'disabled')
+      }
     },
     moveTo (state, path) {
       router.push({ name: path })
@@ -118,12 +127,19 @@ export default new Vuex.Store({
   },
   actions: {
     signup ({ state, commit }, info) {
-      console.log(info.id + '/' + info.pw + '/' + info.pw2)
+      console.log(info.id + '/' + info.pw + '/' + info.email)
+      axios.post('http://localhost:3000/signup', info).then((res) => {
+        console.log(res.data)
+      }).catch((error) => {
+        console.log(error)
+      }).finally(() => {
+        console.log('마지막')
+      })
       commit('moveTo', 'Home')
       commit('setId', info.id)
       state.info.id = ''
       state.info.pw = ''
-      state.info.pw2 = ''
+      state.info.email = ''
     },
     login ({ state, commit }, user) {
       console.log(user.id + ':' + user.pw)
