@@ -3,15 +3,34 @@
   <v-form>
     <v-container class="d-flex flex-column">
       <div style="margin: 0 10%;">
-        <v-text-field class="widthCalc"
+        <v-text-field class="widthCalc" id="input_email"
           v-model="$store.state.info.email"
           @input="setEmail_signup($store.state.info.email)"
           label="email"
           :rules="emailRules"
           required
         ></v-text-field>
-        <button id='btn_email' class="btn btn-success" style="width:80px; height:30px; margin-left:10px;" @click="validate" disabled="disabled"><span style="position: relative; bottom:4.5px;">인증</span></button>
+        <button type="button" id='btn_email' class="btn btn-success text-white" style="width:80px; height:30px; margin-left:10px;" @click="sendEmail($store.state.info.email)" disabled="disabled"><span style="position: relative; bottom:4.5px;">발송</span></button>
        </div>
+       <div style="margin: 0 10%;" v-if="$store.state.number_show">
+          <v-text-field id="certificate" class="certificate"
+          label="인증번호"
+          required
+        ></v-text-field>
+        <button type="button" id='btn_no' class="btn btn-danger text-white" style="width:80px; height:30px; margin-left:10px;" @click="certiNo_check"><span style="position: relative; bottom:4.5px;">인증</span></button>
+       </div>
+        <div class="alert alert-success" role="alert" style="margin: 0 10%;" v-if='$store.state.alert_show'>
+          이메일 인증 성공!!
+        </div>
+        <div class="alert alert-danger" role="alert" style="margin: 0 10%;" v-if='$store.state.alert_danger_show'>
+          이메일 인증을 해주세요!!
+        </div>
+        <div class="alert alert-warning" role="alert" style="margin: 0 10%;" v-if='$store.state.alert_warning_show'>
+          인증번호가 다릅니다.
+        </div>
+        <div class="alert alert-warning" role="alert" style="margin: 0 10%;" v-if='$store.state.alert_warning_info_show'>
+          ID와 PW를 입력해주세요.
+        </div>
       <div>
         <v-text-field
           v-model="$store.state.info.id"
@@ -68,18 +87,23 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setId', 'setPw_signup', 'setEmail_signup', 'moveTo']),
-    ...mapActions(['login']),
-    validate () {
-      var msg = document.querySelector('#mymain > div > div > div > div.hello > form > div > div:nth-child(1) > div > div > div.v-text-field__details > div > div > div')
-      // msg가 null이면서 email안에 값이 있어야함. -> 그때만 disabled 없앰.
-      var btn = document.querySelector('#btn_email')
-      if (!msg && this.$store.state.info.email) {
-        console.log('인증할수있다.')
-        btn.disabled = false
+    ...mapMutations(['setId', 'setPw_signup', 'setEmail_signup', 'moveTo', 'setDisabled', 'removeDisabled']),
+    ...mapActions(['login', 'sendEmail']),
+    certiNo_check () {
+      var inputCertiNo = document.querySelector('#certificate').value
+      this.$store.state.alert_danger_show = false
+      if (inputCertiNo === String(this.$store.state.hidden_number)) {
+        console.log('same')
+        this.$store.state.number_show = false
+        this.$store.state.alert_show = true
+        this.$store.state.alert_warning_show = false
+        this.setDisabled()
       } else {
-        console.log('인증할수없다.')
-        btn.disabled = true
+        console.log('diff')
+        this.$store.state.number_show = true
+        this.$store.state.alert_show = false
+        this.$store.state.alert_warning_show = true
+        this.removeDisabled()
       }
     }
   },
@@ -106,6 +130,10 @@ a {
   margin-left: 79%;
 }
 .widthCalc{
+   width: calc(100% - 90px);
+   display: inline-block;
+}
+.certificate{
    width: calc(100% - 90px);
    display: inline-block;
 }

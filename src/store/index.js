@@ -9,6 +9,12 @@ export default new Vuex.Store({
   state: {
     txt: 'aa',
     show: false,
+    number_show: false,
+    alert_show: false,
+    alert_danger_show: false,
+    alert_warning_show: false,
+    alert_warning_info_show: false,
+    hidden_number: '',
     modalShow: false,
     user:
     {
@@ -112,6 +118,16 @@ export default new Vuex.Store({
         btn.setAttribute('disabled', 'disabled')
       }
     },
+    setDisabled(state) {
+      var inputEmail = document.querySelector('#input_email')
+      inputEmail.setAttribute('disabled', 'disabled')
+      var btn = document.querySelector('#btn_email')
+      btn.setAttribute('disabled', 'disabled')
+    },
+    removeDisabled (state) {
+      var btn = document.querySelector('#btn_email')
+      btn.removeAttribute('disabled')
+    },
     moveTo (state, path) {
       router.push({ name: path })
     }
@@ -126,20 +142,43 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    signup ({ state, commit }, info) {
-      console.log(info.id + '/' + info.pw + '/' + info.email)
-      axios.post('http://localhost:3000/signup', info).then((res) => {
-        console.log(res.data)
+    sendEmail({ state, commit }, email) {
+      this.state.alert_danger_show = false
+      this.state.alert_waring_show = false
+      this.state.alert_warning_info_show = false
+      var param = { email: email }
+      axios.post('http://localhost:3000/send_email', param).then((res) => {
+        console.log(res.data.no)
+        state.hidden_number = res.data.no
+        state.number_show = true // 인증 번호 보이기
       }).catch((error) => {
         console.log(error)
       }).finally(() => {
-        console.log('마지막')
+        console.log('completed!')
       })
-      commit('moveTo', 'Home')
-      commit('setId', info.id)
-      state.info.id = ''
-      state.info.pw = ''
-      state.info.email = ''
+    },
+    signup ({ state, commit }, info) {
+      if (this.state.alert_show) {
+        this.state.alert_danger_show = false
+        this.state.alert_waring_show = false
+        console.log(info.id + '/' + info.pw + '/' + info.email)
+        axios.post('http://localhost:3000/signup', info).then((res) => {
+          console.log(res.data)
+        }).catch((error) => {
+          console.log(error)
+        }).finally(() => {
+          console.log('마지막')
+        })
+        commit('moveTo', 'Home')
+        commit('setId', info.id)
+        state.info.id = ''
+        state.info.pw = ''
+        state.info.email = ''
+      } else {
+        this.state.alert_danger_show = true
+        this.state.alert_waring_show = false
+        // alert('이메일 인증을 해주세요.')
+      }
     },
     login ({ state, commit }, user) {
       console.log(user.id + ':' + user.pw)
@@ -147,7 +186,7 @@ export default new Vuex.Store({
       state.user.id = ''
       state.user.pw = ''
 
-      axios.post('http://localhost:3000/db', state.user).then((res) => {
+      axios.post('http://localhost:3000/login', state.user).then((res) => {
         console.log(res.data)
       }).catch((error) => {
         console.log(error)

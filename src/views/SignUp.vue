@@ -3,7 +3,7 @@
       <Logo2/>
       <SignupForm/>
       <div class="login_btn">
-        <v-btn style="width:100%; background-color:#f6df55; color:white; font-weight:bold;" @click="signup($store.state.info)">
+        <v-btn style="width:100%; background-color:#f6df55; color:white; font-weight:bold;" @click="signup_check">
         Signup
         </v-btn>
       </div>
@@ -24,9 +24,17 @@ export default {
   },
   methods: {
     ...mapState(['info']),
-    ...mapActions(['signup'])
+    ...mapActions(['signup']),
+    signup_check () {
+      // id, pw 입력되었는지
+      if (!this.$store.state.info.id || !this.$store.state.info.pw) {
+        this.$store.state.alert_warning_info_show = true
+      } else {
+        this.$store.state.alert_warning_info_show = false
+        this.signup(this.$store.state.info)
+      }
+    }
   }
-
 }
 </script>
 <style scoped>
