@@ -22,11 +22,13 @@ export default {
     user: { id: '', msg: '' }
   }),
   methods: {
-    ...mapActions(['foundUser', 'addUser']),
+    ...mapActions(['foundUser', 'addUser', 'searchUser']),
     search () {
       if (this.user.id !== '') {
         console.log('id있음')
-        this.foundUser(this.user)
+        // 아이디가 있으면 검색
+        this.searchUser(this.user.id)
+        // 해당하는 유저가 있으면 추가
       } else {
         console.log('id없음')
       }

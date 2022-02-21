@@ -1,8 +1,8 @@
 <template>
   <div>
     <img
-    height="200"
-    width="200"
+    height="125"
+    width="125"
     src="../assets/mouse.png"
     style="display: block;  margin: auto; margin-top:30px;">
   </div>

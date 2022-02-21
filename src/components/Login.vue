@@ -27,6 +27,12 @@
           class="input-group--focused"
           @click:append="show_pw = !show_pw"
         ></v-text-field>
+        <div class="alert alert-danger" role="alert" style="margin: 10px 10% 0 10%; padding: 5px 20px;" v-if='$store.state.alert_login_fail_show'>
+          <small>ID 또는 PW가 잘못 되었습니다.</small>
+        </div>
+        <div class="alert alert-warning" role="alert" style="margin: 10px 10% 0 10%; padding: 5px 20px;" v-if='$store.state.alert_login_validate_show'>
+          <small>ID, PW를 입력하세요.</small>
+        </div>
         <a class="signup" href='../signup'>sign up</a>
       </div>
     </v-container>

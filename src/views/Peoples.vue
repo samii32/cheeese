@@ -9,8 +9,10 @@
         <v-list-item-title class="vlist">
           <div class="vertical_mid">
             <img class="img"
-            src="@/assets/cheese.png" @click="openPop('UserPopup',me,'UserPopup-1')">
-            <span>봉골골</span>
+            src="@/assets/cheese.png" @click="openPop('UserPopup',$store.state.user,'UserPopup-1')">
+            <!-- <img class="img"
+            src="@/assets/cheese.png" @click="openPop('UserPopup',{ nick: $store.state.user.nm, msg: $store.state.user.msg, modal: false},'UserPopup-1')"> -->
+            <span>{{ $store.state.user.nm }}</span>
           </div>
         </v-list-item-title>
         </v-list-item>
@@ -63,8 +65,8 @@ export default {
     message: 'hi',
     cnt: 0,
     me: {
-      nick: '봉골골',
-      msg: 'happy',
+      nick: '',
+      msg: '',
       modal: false
     }
   }),
@@ -77,7 +79,7 @@ export default {
     ...mapMutations(['togglemodalShow']),
     ...mapActions(['addWin', 'removeWin', 'isExistWin']),
     openPop: function (path, people, nm) {
-      const routeData = this.$router.resolve({ name: path, query: { nick: people.nick, msg: people.msg } })
+      const routeData = this.$router.resolve({ name: path, query: { nick: people.nm, msg: people.msg } })
       var alreadyOpen = electron.ipcRenderer.sendSync('alreadyOpen', nm)
       console.log(routeData)
       console.log('alreadyOpen:' + alreadyOpen)

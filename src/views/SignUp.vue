@@ -2,7 +2,7 @@
 <div class="flex-column d-flex">
       <Logo2/>
       <SignupForm/>
-      <div class="login_btn">
+      <div class="login_btn" style="position:relative; top:-50px;">
         <v-btn style="width:100%; background-color:#f6df55; color:white; font-weight:bold;" @click="signup_check">
         Signup
         </v-btn>
