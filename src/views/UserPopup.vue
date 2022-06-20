@@ -5,7 +5,7 @@
         <img class="img" src="@/assets/cheese.png">
       </div>
       <div>
-        <h3 class="center">{{ $route.query.nick }}</h3>
+        <h3 class="center">{{ $route.query.nm }}</h3>
         <h4 class="center">{{ $route.query.msg }}</h4>
       </div>
       <div>

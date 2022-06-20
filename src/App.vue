@@ -30,7 +30,7 @@
               v-for="item in items"
               :key="item.title"
             >
-              <v-list-item-action>
+              <v-list-item-action @click="nav_vailidate(item.title)">
                 <router-link :to="item.link">
                   <v-icon x-large>{{ item.icon }}</v-icon>
                 </router-link>
@@ -69,7 +69,7 @@ export default {
   }
   ),
   methods: {
-    ...mapMutations(['setshow']),
+    ...mapMutations(['setshow', 'setId']),
     ...mapActions(['addWin', 'removeWin']),
     close () {
       electron.ipcRenderer.send('close')
@@ -84,6 +84,16 @@ export default {
       } else {
         this.maxi = true
         electron.ipcRenderer.send('maximize')
+      }
+    },
+    nav_vailidate (nav) {
+      if (nav === 'logout') {
+        // user정보 초기화, friends 초기화
+        // this.$store.state.user = {}
+        this.setId('')
+        this.$store.state.friends = []
+        // sessionStorage.setItem('user_no', '')
+        // sessionStorage.setItem('user_id', '')
       }
     }
   },

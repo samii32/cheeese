@@ -34,12 +34,13 @@
               :key="idx"
               link
             >
-            <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1,openPop('Talk',people,'Talk'+idx)" style="cursor:default">
+            <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1, openPop('Talk',people,'Talk'+idx)" style="cursor:default">
+            <!-- <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1,createChannel($store.state.user.no,people.no),openPop('Talk',people,'Talk'+idx)" style="cursor:default"> -->
               <div class="vertical_mid">
                 <img class="img"
                 src="@/assets/cheese.png" @click="openPop('UserPopup',people,'UserPopup'+idx)" style="cursor:pointer">
                 <span>
-                {{people.nick}}
+                {{people.nm}}
                 </span>
               </div>
               </v-list-item-title>
@@ -53,7 +54,7 @@
 </template>
 <script>
 import Modal from '../components/Modal.vue'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapState } from 'vuex'
 const electron = window.require('electron')
 
 export default {
@@ -65,10 +66,11 @@ export default {
     message: 'hi',
     cnt: 0,
     me: {
-      nick: '',
+      nm: '',
       msg: '',
       modal: false
-    }
+    },
+    channelNo: ''
   }),
   computed: {
     cnt_friends () {
@@ -76,10 +78,22 @@ export default {
     }
   },
   methods: {
+    ...mapState(['user']),
     ...mapMutations(['togglemodalShow']),
-    ...mapActions(['addWin', 'removeWin', 'isExistWin']),
+    ...mapActions(['addWin', 'removeWin', 'isExistWin', 'check_uc']),
+
+    createChannel (me, you) {
+      console.log(me)
+      console.log(you)
+      var info = { me: me, you: you }
+      // const channelNo = this.check_uc(info)
+      // console.log('channelNo:' + channelNo)
+      //this.check_uc(info)
+    },
     openPop: function (path, people, nm) {
-      const routeData = this.$router.resolve({ name: path, query: { nick: people.nm, msg: people.msg } })
+      console.log('openpop!!')
+      console.log(people)
+      const routeData = this.$router.resolve({ name: path, query: { nm: people.nm, msg: people.msg, no: people.no, channelNo: people.channelNo, me: this.$store.state.user.no, myname: this.$store.state.user.nm } })
       var alreadyOpen = electron.ipcRenderer.sendSync('alreadyOpen', nm)
       console.log(routeData)
       console.log('alreadyOpen:' + alreadyOpen)

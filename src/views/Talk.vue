@@ -11,7 +11,7 @@
           gradient="to top right, rgba(55,236,186,.7), rgba(25,32,72,.7)"
         ></v-img>
       </template>
-      <v-app-bar-title style="margin:10px 0 10px 20px;">{{ $route.query.nick }}</v-app-bar-title>
+      <v-app-bar-title style="margin:10px 0 10px 20px;">{{ $route.query.nm }}</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>
@@ -58,19 +58,45 @@ export default {
   name: 'Talk',
   components: {
   },
+  created () {
+    console.log('created')
+    // 고유 채널번호 줘야함.
+    console.log('me:' + this.$route.query.me)
+    var channelNo = this.$route.query.channelNo
+    this.$socket.emit('joinRoom', channelNo)
+    this.$socket.on('broadcast', (data) => {
+      console.log(data)
+      var tmp = { who: data.name, txt: data.msg }
+      // 서버로부터 온 데이터로 말풍선만들기.
+      this.addChat(tmp)
+      // 스크롤 항상 하단으로 보내기
+      var tagId = document.getElementById('conversation')
+      tagId.scrollTop = tagId.scrollHeight
+    })
+  },
   data () {
     return {
-      nk: this.$route.query.nick,
+      nk: this.$route.query.myname,
       mytxt: ''
     }
   },
   methods: {
-    ...mapActions(['addChat']),
+    ...mapActions(['addChat', 'getChannelNo', 'getMessage', 'saveMessage']),
     send: function (who, txt) {
       var tmp = { who: who, txt: txt }
       if (this.mytxt.trim() !== '' && this.mytxt.trim() !== '\n') {
         this.addChat(tmp)
+        this.$socket.emit('chat', {
+          name: this.nk,
+          msg: txt,
+          to: this.$route.query.no,
+          channelNo: this.$route.query.channelNo
+        })
       }
+      // 메세지 저장할것.
+      var info = { sender: this.$route.query.me, receiver: this.$route.query.no, channelNo: this.$route.query.channelNo, txt: txt }
+      this.saveMessage(info)
+
       this.mytxt = ''
       document.getElementById('txt').focus()
       // 스크롤 항상 하단으로 보내기
@@ -90,7 +116,8 @@ export default {
         console.log('shift+enter')
       } else if (e.key === 'Enter') {
         if (this.mytxt.trim() !== '' && this.mytxt.trim() !== '\n') {
-          this.send(this.nk, this.mytxt)
+          // this.send(this.nk, this.mytxt)
+          this.send('me', this.mytxt)
           console.log(this.mytxt + '__')
           this.mytxt = ''
         } else {
@@ -103,6 +130,10 @@ export default {
     }
   },
   mounted: function () {
+    // dom이 load 다 된후에 바로 채팅내용가져와야함.
+    var tmp = { channelNo: this.$route.query.channelNo, no: this.$route.query.me }
+    this.getMessage(tmp)
+
     document.getElementById('min').style.color = 'white'
     document.getElementById('max').style.color = 'white'
     document.getElementById('close').style.color = 'white'
@@ -207,6 +238,12 @@ align-self: flex-start;
   text-align: right;
 
 }
+.overflow{
+  max-width: calc(100% - 145px);
+}
+.pre2{
+  white-space:pre-wrap;
+}
 </style>
 <style>
 ::-webkit-scrollbar-thumb .c_over{
@@ -284,5 +321,11 @@ align-self: flex-start;
 }
 pre {
  margin-bottom: 0px;
+}
+.overflow{
+  max-width: calc(100% - 145px);
+}
+.pre2{
+  white-space:pre-wrap;
 }
 </style>

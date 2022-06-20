@@ -24,8 +24,9 @@ export default {
   methods: {
     ...mapActions(['foundUser', 'addUser', 'searchUser']),
     search () {
-      if (this.user.id !== '') {
-        console.log('id있음')
+      if (this.user.id !== '' && this.user.id !== this.$store.state.user.id) {
+        console.log(this.user.id)
+        console.log(this.$store.state.user.id)
         // 아이디가 있으면 검색
         this.searchUser(this.user.id)
         // 해당하는 유저가 있으면 추가

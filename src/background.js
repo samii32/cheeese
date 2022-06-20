@@ -25,7 +25,8 @@ async function createWindow () {
       // contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true
+      enableRemoteModule: true,
+      devTools: true
     }
   })
   win.setTitle('abc')
