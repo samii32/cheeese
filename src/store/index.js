@@ -430,6 +430,7 @@ export default new Vuex.Store({
       var ampm = today.getHours() < 12 ? 'AM' : 'PM'
       var h = today.getHours() < 12 ? today.getHours() : parseInt(today.getHours()) - 12
       h = h === 0 ? 12 : h
+      h = h.length < 2 ? '0' + h : h
       var m = String(today.getMinutes()).length < 2 ? '0' + String(today.getMinutes()) : today.getMinutes()
       var t = ampm + ' ' + h + ':' + m
 

@@ -81,8 +81,22 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addChat', 'getChannelNo', 'getMessage', 'saveMessage']),
+    ...mapActions(['addChat', 'getChannelNo', 'getMessage', 'saveMessage', 'getDay']),
     send: function (who, txt) {
+      // 먼저 날짜체크해줄것. # 없으면 하고 있으면 하면안됨.
+      var ChatDays = document.getElementsByClassName('date')
+      var lastChatDay = ChatDays[ChatDays.length - 1].lastChild.textContent
+
+      var today = new Date()
+      var year = today.getFullYear() // 년도
+      var month = today.getMonth() + 1 // 월
+      month = month.toString().length < 2 ? '0' + month : month
+      var date = today.getDate() // 날짜
+      var day = year + '.' + month + '.' + date
+
+      if (lastChatDay !== day) {
+        this.getDay({ day: day })
+      }
       var tmp = { who: who, txt: txt }
       if (this.mytxt.trim() !== '' && this.mytxt.trim() !== '\n') {
         this.addChat(tmp)
