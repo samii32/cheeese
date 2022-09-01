@@ -46,13 +46,13 @@
           label="pw"
           Regular
           placeholder="pw"
-          :append-icon="show_pw ? 'mdi-eye' : 'mdi-eye-off'"
+          :append-icon="pw_show ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required, rules.min]"
-          :type="show_pw ? 'text' : 'password'"
+          :type="pw_show ? 'text' : 'password'"
           name="input-10-2"
           hint="At least 8 characters"
           class="input-group--focused"
-          @click:append="show_pw = !show_pw"
+          @click:append="pw_show = !pw_show"
         ></v-text-field>
         <div class="alert alert-warning" role="alert" style="margin: 0 10%; padding: 5px 20px; top:-13px;" v-if='$store.state.alert_warning_info_show'>
           <small>ID와 PW를 입력해주세요.</small>
@@ -79,7 +79,7 @@ export default {
   data () {
     return {
       email: this.$store.state.info.email,
-      show_pw: false,
+      pw_show: false,
       password: 'Password',
       emailRules: [v => /.+@.+/.test(v) || 'Invalid Email address'],
       rules: {

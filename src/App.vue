@@ -20,28 +20,28 @@
           mini-variant
           mini-variant-width="70"
           permanent
-          v-if="$store.state.show"
+          v-if="$store.state.menu_show"
         >
           <v-list
             dense
             nav
           >
             <v-list-item
-              v-for="item in items"
-              :key="item.title"
+              v-for="menu in menus"
+              :key="menu.title"
             >
-              <v-list-item-action @click="nav_vailidate(item.title)">
-                <router-link :to="item.link">
-                  <v-icon x-large>{{ item.icon }}</v-icon>
+              <v-list-item-action @click="resetInfo(menu.title)">
+                <router-link :to="menu.link">
+                  <v-icon x-large>{{ menu.icon }}</v-icon>
                 </router-link>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title>{{ menu.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-navigation-drawer>
-        <v-main id="mymain">
+        <v-main id="myMain">
           <div>
           <router-view/>
           </div>
@@ -52,14 +52,14 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 const electron = window.require('electron')
 
 export default {
   name: 'App',
 
   data: () => ({
-    items: [
+    menus: [
       { title: 'account', icon: 'mdi-account', link: '/Peoples' },
       { title: 'talk', icon: 'mdi-forum', link: '/TalkList' },
       { title: 'logout', icon: 'mdi-logout', link: '/' }
@@ -69,14 +69,16 @@ export default {
   }
   ),
   methods: {
-    ...mapMutations(['setshow', 'setId']),
-    ...mapActions(['addWin', 'removeWin']),
+    ...mapMutations(['setMenuShow', 'setId']),
+    // 창 닫기
     close () {
       electron.ipcRenderer.send('close')
     },
+    // 창 최소화
     minimize () {
       electron.ipcRenderer.send('minimize')
     },
+    // 창 최대화
     maximize () {
       if (this.maxi) {
         this.maxi = false
@@ -86,41 +88,25 @@ export default {
         electron.ipcRenderer.send('maximize')
       }
     },
-    nav_vailidate (nav) {
+    // 로그아웃시 user정보 초기화, friends 초기화
+    resetInfo (nav) {
       if (nav === 'logout') {
-        // user정보 초기화, friends 초기화
-        // this.$store.state.user = {}
         this.setId('')
         this.$store.state.friends = []
-        // sessionStorage.setItem('user_no', '')
-        // sessionStorage.setItem('user_id', '')
       }
     }
   },
-  mounted () {
-    // const MINUS = document.getElementById('minimize')
-    // const CLOSE = document.getElementById('close-app')
-    // MINUS.addEventListener('click', this.minimize)
-    // CLOSE.addEventListener('click', this.close)
-    // const Script = document.createElement('script')
-    // Script.setAttribute('src', './js/renderer.js')
-    // document.head.appendChild(Script)
-  },
   watch: {
     $route: function (to, from) {
-      this.setshow(to.path)
-      if (to.path === '/' || to.path === '/signup' || to.path === '/userpopup') {
-        console.log('home.vue, path:' + to.path)
-        document.getElementById('mymain').style = 'width:100%'
-      } else if (to.path === '/peoples') {
-        console.log('here:' + to.path)
-        var mywidth = 'calc(100% - 70px)'
-        document.getElementById('mymain').style.width = mywidth
-      }
+      // 주소가 이동하면 menu_show 상태셋팅
+      this.setMenuShow(to.path)
 
-      if (to.path === '/talk') {
-        alert(to.path)
-        document.getElementById('min').style.color = 'white'
+      if (to.path === '/' || to.path === '/signup' || to.path === '/userpopup') {
+        document.getElementById('myMain').style = 'width:100%'
+      } else if (to.path === '/peoples') {
+        // 주소가 친구목록으로 가면 menu바 크기만큼 가로길이 셋팅
+        var mainWidth = 'calc(100% - 70px)'
+        document.getElementById('myMain').style.width = mainWidth
       }
     }
   }

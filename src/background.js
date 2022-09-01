@@ -17,6 +17,8 @@ async function createWindow () {
     width: 800,
     height: 600,
     frame: false,
+
+    icon: './src/assets/cheese.png', // 커스텀 아이콘으로 변경
     webPreferences: {
 
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -148,7 +150,7 @@ ipcMain.on('setTitle', (evt, titleNm) => {
     mywin.setTitle(titleNm)
   })
 })
-ipcMain.on('alreadyOpen', (evt, titleNm) => {
+ipcMain.on('isOpen', (evt, titleNm) => {
   var wins = BrowserWindow.getAllWindows()
   wins.forEach(function (win) {
     if (titleNm === win.getTitle()) {

@@ -11,7 +11,7 @@
           gradient="to top right, rgba(55,236,186,.7), rgba(25,32,72,.7)"
         ></v-img>
       </template>
-      <v-app-bar-title style="margin:10px 0 10px 20px;">{{ $route.query.nm }}</v-app-bar-title>
+      <v-app-bar-title style="margin:10px 0 10px 20px;">{{ $route.query.friendNm }}</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>
@@ -24,34 +24,19 @@
       id="scrolling-techniques-5"
     >
   <div class="c_over" id='conversation'>
-    <!-- <div class="someone c_dflex">
-        <img class="c_img" src="@/assets/cheese.png">
-        <div>
-          <div class="c_nm">{{this.nk}}</div>
-        <div class="c_content">안녕하세요 호호...</div>
-        </div>
-        <span class="time">오후 5:45</span>
-    </div>
-    <div class="me c_dflex_reverse">
-      <div>
-      <div class="c_content">안녕하세요 안녕하세요 호호...</div>
-      </div>
-      <span class="time">오후 5:45</span>
-    </div> -->
   </div>
     </v-sheet>
     <v-app-bar
       style="position:fixed; bottom:0px; height:120px">
-      <!-- <div class="dflex"> -->
       <div style="width:100%; height:120px; display:flex; align-items:end; padding:10px;">
         <textarea id="txt" style="width:100%;height:100%;" v-model="mytxt" @keypress="valid_enter" @keyup="clear_txt"></textarea>
       </div>
       <div style="width:110px;"><v-btn @click="send('me',mytxt)" height="95" color="#d6d6d6">Send</v-btn></div>
-      <!-- </div> -->
     </v-app-bar>
   </div>
 </template>
 <script>
+
 import { mapActions } from 'vuex'
 
 export default {
@@ -59,13 +44,16 @@ export default {
   components: {
   },
   created () {
+    // 대화내용 불러오기
     console.log('created')
     // 고유 채널번호 줘야함.
-    console.log('me:' + this.$route.query.me)
+    console.log('myNo:' + this.$route.query.myNo)
     var channelNo = this.$route.query.channelNo
+    console.log('channelNo:' + channelNo)
+
     this.$socket.emit('joinRoom', channelNo)
     this.$socket.on('broadcast', (data) => {
-      console.log(data)
+      // console.log(data)
       var tmp = { who: data.name, txt: data.msg }
       // 서버로부터 온 데이터로 말풍선만들기.
       this.addChat(tmp)
@@ -76,7 +64,7 @@ export default {
   },
   data () {
     return {
-      nk: this.$route.query.myname,
+      nk: this.$route.query.myName,
       mytxt: ''
     }
   },
@@ -92,6 +80,7 @@ export default {
       var month = today.getMonth() + 1 // 월
       month = month.toString().length < 2 ? '0' + month : month
       var date = today.getDate() // 날짜
+      date = date.toString().length < 2 ? '0' + date : date
       var day = year + '.' + month + '.' + date
 
       if (lastChatDay !== day) {
@@ -103,12 +92,12 @@ export default {
         this.$socket.emit('chat', {
           name: this.nk,
           msg: txt,
-          to: this.$route.query.no,
+          to: this.$route.query.friendNo,
           channelNo: this.$route.query.channelNo
         })
       }
       // 메세지 저장할것.
-      var info = { sender: this.$route.query.me, receiver: this.$route.query.no, channelNo: this.$route.query.channelNo, txt: txt }
+      var info = { sender: this.$route.query.myNo, receiver: this.$route.query.friendNo, channelNo: this.$route.query.channelNo, txt: txt }
       this.saveMessage(info)
 
       this.mytxt = ''
@@ -145,7 +134,7 @@ export default {
   },
   mounted: function () {
     // dom이 load 다 된후에 바로 채팅내용가져와야함.
-    var tmp = { channelNo: this.$route.query.channelNo, no: this.$route.query.me }
+    var tmp = { channelNo: this.$route.query.channelNo, no: this.$route.query.myNo }
     this.getMessage(tmp)
 
     document.getElementById('min').style.color = 'white'

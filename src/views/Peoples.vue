@@ -9,9 +9,7 @@
         <v-list-item-title class="vlist">
           <div class="vertical_mid">
             <img class="img"
-            src="@/assets/cheese.png" @click="openPop('UserPopup',$store.state.user,'UserPopup-1')">
-            <!-- <img class="img"
-            src="@/assets/cheese.png" @click="openPop('UserPopup',{ nick: $store.state.user.nm, msg: $store.state.user.msg, modal: false},'UserPopup-1')"> -->
+            src="@/assets/cheese.png" @click="openPop('UserPopup',$store.state.user,'mypage')" style="cursor:pointer">
             <span>{{ $store.state.user.nm }}</span>
           </div>
         </v-list-item-title>
@@ -30,17 +28,16 @@
     </template>
         <v-list class="scroll">
             <v-list-item
-              v-for="(people, idx) in $store.state.friends"
+              v-for="(friend, idx) in $store.state.friends"
               :key="idx"
               link
             >
-            <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1, openPop('Talk',people,'Talk'+idx)" style="cursor:default">
-            <!-- <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1,createChannel($store.state.user.no,people.no),openPop('Talk',people,'Talk'+idx)" style="cursor:default"> -->
+            <v-list-item-title class="grow vlist" v-on:dblclick="cnt += 1, openPop('Talk',friend,'talk_with_'+friend.nm+'_'+idx)">
               <div class="vertical_mid">
                 <img class="img"
-                src="@/assets/cheese.png" @click="openPop('UserPopup',people,'UserPopup'+idx)" style="cursor:pointer">
+                src="@/assets/cheese.png" @click="openPop('UserPopup',friend,friend.nm + '\'s page_' + idx)" style="cursor:pointer">
                 <span>
-                {{people.nm}}
+                {{friend.nm}}
                 </span>
               </div>
               </v-list-item-title>
@@ -90,24 +87,24 @@ export default {
       // console.log('channelNo:' + channelNo)
       //this.check_uc(info)
     },
-    openPop: function (path, people, nm) {
-      console.log('openpop!!')
-      console.log(people)
-      const routeData = this.$router.resolve({ name: path, query: { nm: people.nm, msg: people.msg, no: people.no, channelNo: people.channelNo, me: this.$store.state.user.no, myname: this.$store.state.user.nm } })
-      var alreadyOpen = electron.ipcRenderer.sendSync('alreadyOpen', nm)
-      console.log(routeData)
-      console.log('alreadyOpen:' + alreadyOpen)
-      if (!alreadyOpen[0]) {
-        var i = alreadyOpen[1] - 1
+    openPop: function (path, friend, title) {
+      const q = { friendNm: friend.nm, msg: friend.msg, friendNo: friend.no, channelNo: friend.channelNo, myNo: this.$store.state.user.no, myName: this.$store.state.user.nm }
+      const info = this.$router.resolve({ name: path, query: q })
+      var isOpen = electron.ipcRenderer.sendSync('isOpen', title)
+
+      if (!isOpen[0]) {
+        var i = isOpen[1] - 1
         var left = 200
         var top = 200
         var nleft = left + (i % 5 * 30) + (parseInt(i / 5) * 15)
         var nTop = top + (i % 5 * 30) - (parseInt(i / 5) * 15)
-        window.open(routeData.href, nm, ['width=400', 'heigth=600', 'left=' + nleft, 'top=' + nTop, 'scrollbars = no', 'menubar=no', 'toolbar=no'])
-        electron.ipcRenderer.send('setTitle', nm)
+        window.open(info.href, title, ['width=400', 'heigth=600', 'left=' + nleft, 'top=' + nTop, 'scrollbars = no', 'menubar=no', 'toolbar=no'])
+        electron.ipcRenderer.send('setTitle', title)
       } else {
         console.log('이미 열려있습니당')
         // 열린창을 포커스 맞추기
+        // background.js 에서 BrowserWindow에서 getAllWindows()
+        // var myWindow = BrowserWindow.fromId(id);
       }
     },
     setModal: function () {
@@ -167,6 +164,7 @@ padding: 13px;
 }
 .vlist{
   height: 80px;
+  cursor: default;
 }
 .vertical_mid{
   display:inline-block;

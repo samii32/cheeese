@@ -4,7 +4,7 @@
     height="180"
     width="180"
     src="../assets/cheese.png"
-    style="display: block;  margin: auto; margin-top:30px; margin-bottom:20px;">
+    class="logo">
   </div>
 </template>
 
@@ -15,3 +15,12 @@ export default {
   })
 }
 </script>
+
+<style scoped>
+.logo {
+  display: block;
+  margin: auto;
+  margin-top:30px;
+  margin-bottom: 20px;
+}
+</style>

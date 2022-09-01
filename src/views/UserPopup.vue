@@ -5,8 +5,8 @@
         <img class="img" src="@/assets/cheese.png">
       </div>
       <div>
-        <h3 class="center">{{ $route.query.nm }}</h3>
-        <h4 class="center">{{ $route.query.msg }}</h4>
+        <h1 class="center">{{ $route.query.friendNm }}</h1>
+        <h5 class="center">{{ $route.query.msg }}</h5>
       </div>
       <div>
         <v-bottom-navigation
@@ -15,16 +15,16 @@
           style="position:fixed;"
         >
           <v-btn>
-            <span>Recents</span>
-            <v-icon>mdi-history</v-icon>
+            <span>Edit</span>
+            <v-icon>mdi-cog</v-icon>
+          </v-btn>
+          <v-btn>
+            <span>My Chat</span>
+            <v-icon>mdi-wechat</v-icon>
           </v-btn>
           <v-btn>
             <span>Favorites</span>
             <v-icon>mdi-heart</v-icon>
-          </v-btn>
-          <v-btn>
-            <span>Nearby</span>
-            <v-icon>mdi-map-marker</v-icon>
           </v-btn>
         </v-bottom-navigation>
       </div>

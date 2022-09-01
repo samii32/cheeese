@@ -4,7 +4,7 @@
     height="125"
     width="125"
     src="../assets/mouse.png"
-    style="display: block;  margin: auto; margin-top:30px;">
+    class="logo">
   </div>
 </template>
 
@@ -15,3 +15,10 @@ export default {
   })
 }
 </script>
+<style scoped>
+.logo {
+  display: block;
+  margin: auto;
+  margin-top:30px;
+}
+</style>

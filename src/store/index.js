@@ -8,15 +8,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     txt: 'aa',
-    show: false,
+    menu_show: false,
     number_show: false,
     alert_show: false,
     alert_danger_show: false,
     alert_warning_show: false,
     alert_warning_info_show: false,
     alert_warning_duplicate_show: false,
-    alert_login_fail_show: false,
-    alert_login_validate_show: false,
+    login_fail_show: false,
+    login_validate_show: false,
     hidden_number: '',
     modalShow: false,
     user:
@@ -33,11 +33,11 @@ export default new Vuex.Store({
     ]
   },
   mutations: {
-    setshow (state, path) {
+    setMenuShow (state, path) {
       if (path === '/' || path === '/signup') {
-        state.show = false
+        state.menu_show = false
       } else {
-        state.show = true
+        state.menu_show = true
       }
     },
     togglemodalShow (state) {
@@ -94,6 +94,7 @@ export default new Vuex.Store({
       var today = new Date()
       var ampm = today.getHours() < 12 ? 'AM' : 'PM'
       var h = today.getHours() < 12 ? today.getHours() : parseInt(today.getHours()) - 12
+      h = h.toString().length < 2 ? '0' + h : h
       var m = String(today.getMinutes()).length < 2 ? '0' + String(today.getMinutes()) : today.getMinutes()
       return ampm + ' ' + h + ':' + m
     }
@@ -145,6 +146,7 @@ export default new Vuex.Store({
         // alert('이메일 인증을 해주세요.')
       }
     },
+
     // check_uc ({ state, commit, dispatch }, info) {
     //   var result = ''
     //   axios.post('http://localhost:3000/check_uc', { me: info.me, you: info.you }).then((res) => {
@@ -224,11 +226,11 @@ export default new Vuex.Store({
 
             // state.user.id = ''
             state.user.pw = ''
-            state.alert_login_fail_show = false
-            state.alert_login_validate_show = false
+            state.login_fail_show = false
+            state.login_validate_show = false
           } else {
-            state.alert_login_fail_show = true
-            state.alert_login_validate_show = false
+            state.login_fail_show = true
+            state.login_validate_show = false
             // console.log('로그인실패, id, pw 다시 확인하세요.')
           }
         }).catch((error) => {
@@ -238,8 +240,8 @@ export default new Vuex.Store({
           console.log('마지막')
         })
       } else {
-        state.alert_login_fail_show = false
-        state.alert_login_validate_show = true
+        state.login_fail_show = false
+        state.login_validate_show = true
         // console.log('id, pw입력하세요.')
       }
     },
@@ -384,7 +386,7 @@ export default new Vuex.Store({
         var img = document.createElement('img')
         img.classList.add('c_img')
         img.src = require('@/assets/cheese.png')
-        console.log(lastchat)
+        // console.log(lastchat)
         if (lastchat !== null && lastchat.classList[0] === curClass) {
           // 같은 사람이 한 말이라면
           // 이미지 없애주어야함.
@@ -430,7 +432,7 @@ export default new Vuex.Store({
       var ampm = today.getHours() < 12 ? 'AM' : 'PM'
       var h = today.getHours() < 12 ? today.getHours() : parseInt(today.getHours()) - 12
       h = h === 0 ? 12 : h
-      h = h.length < 2 ? '0' + h : h
+      h = h.toString().length < 2 ? '0' + h : h
       var m = String(today.getMinutes()).length < 2 ? '0' + String(today.getMinutes()) : today.getMinutes()
       var t = ampm + ' ' + h + ':' + m
 
@@ -442,17 +444,17 @@ export default new Vuex.Store({
       if (lastchat !== null && lastchat.classList[0] === curClass && lastchat.lastChild.textContent === t) {
         lastchat.lastChild.textContent = ''
       }
-      console.log('div.scrolltop:' + div.scrolltop)
-      console.log('div.scrollHeight:' + div.scrollHeight)
+      // console.log('div.scrolltop:' + div.scrolltop)
+      // console.log('div.scrollHeight:' + div.scrollHeight)
 
       // div.scrollTop = div.scrollHeight
     },
     getDay ({ state, commit }, info) {
       // 가장 마지막의  date 숫자를 가져와야함.
 
-      var lastDate = document.getElementsByName('date').lastChild
+      // var lastDate = document.getElementsByName('date').lastChild
 
-      console.log(lastDate + 'last~~Date')
+      // console.log(lastDate + 'last~~Date')
 
       var day = document.createElement('div')
       // day.style.borderBottom = 'solid thin #cfcfcf'
@@ -504,7 +506,7 @@ export default new Vuex.Store({
         var img = document.createElement('img')
         img.classList.add('c_img')
         img.src = require('@/assets/cheese.png')
-        console.log(lastchat)
+        // console.log(lastchat)
         if (lastchat !== null && lastchat.classList[0] === curClass) {
           // 같은 사람이 한 말이라면
           // 이미지 없애주어야함.
@@ -598,11 +600,11 @@ export default new Vuex.Store({
     getMessage ({ state, dispatch }, tmp) {
       axios.post('http://localhost:3000/getMessage', { channelNo: tmp.channelNo }).then((res) => {
         var txts = res.data
-        console.log(txts)
+        // console.log(txts)
         // info who, txt, created_at
         var prevDate = '1900.01.01'
         txts.forEach(function (txt) {
-          console.log(txt)
+          // console.log(txt)
           var who = ''
           if (String(txt.no) === tmp.no) {
             who = 'me'
@@ -611,8 +613,8 @@ export default new Vuex.Store({
           }
 
           var info = { who: who, txt: txt.txt, day: txt.day, created_at: txt.time }
-          console.log(prevDate + ',' + info.day)
-          console.log(prevDate < info.day)
+          // console.log(prevDate + ',' + info.day)
+          // console.log(prevDate < info.day)
           if (prevDate < info.day) {
             dispatch('getDay', info)
             prevDate = info.day
@@ -625,7 +627,7 @@ export default new Vuex.Store({
       }).catch((error) => {
         console.log(error)
       }).finally(() => {
-        console.log('completed saveMessage')
+        console.log('completed getMessage')
       })
     },
     getChannelList ({ state, dispatch }, tmp) {

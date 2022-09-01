@@ -55,10 +55,10 @@ export default {
       console.log(people)
       console.log('close~')
       const routeData = this.$router.resolve({ name: path, query: { nm: people.nm, msg: people.msg, no: people.receiver_no, channelNo: people.channelNo, me: this.$store.state.user.no, myname: this.$store.state.user.nm } })
-      var alreadyOpen = electron.ipcRenderer.sendSync('alreadyOpen', nm)
+      var isOpen = electron.ipcRenderer.sendSync('isOpen', nm)
 
-      if (!alreadyOpen[0]) {
-        var i = alreadyOpen[1] - 1
+      if (!isOpen[0]) {
+        var i = isOpen[1] - 1
         var left = 200
         var top = 200
         var nleft = left + (i % 5 * 30) + (parseInt(i / 5) * 15)

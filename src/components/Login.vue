@@ -1,8 +1,8 @@
 <template>
-  <div class="hello">
+  <div>
   <v-form>
     <v-container class="d-flex flex-column">
-      <div style="width:background-color:red;">
+      <div>
         <v-text-field
           v-model="$store.state.user.id"
           @input="$store.commit('setId',$store.state.user.id)"
@@ -19,18 +19,18 @@
           label="pw"
           Regular
           placeholder="pw"
-          :append-icon="show_pw ? 'mdi-eye' : 'mdi-eye-off'"
+          :append-icon="pw_show ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required, rules.min]"
-          :type="show_pw ? 'text' : 'password'"
+          :type="pw_show ? 'text' : 'password'"
           name="input-10-2"
           hint="At least 8 characters"
           class="input-group--focused"
-          @click:append="show_pw = !show_pw"
+          @click:append="pw_show = !pw_show"
         ></v-text-field>
-        <div class="alert alert-danger" role="alert" style="margin: 10px 10% 0 10%; padding: 5px 20px;" v-if='$store.state.alert_login_fail_show'>
+        <div class="alert alert-danger" role="alert" v-if='$store.state.login_fail_show'>
           <small>ID 또는 PW가 잘못 되었습니다.</small>
         </div>
-        <div class="alert alert-warning" role="alert" style="margin: 10px 10% 0 10%; padding: 5px 20px;" v-if='$store.state.alert_login_validate_show'>
+        <div class="alert alert-warning" role="alert" v-if='$store.state.login_validate_show'>
           <small>ID, PW를 입력하세요.</small>
         </div>
         <a class="signup" href='../signup'>sign up</a>
@@ -42,7 +42,7 @@
 
 <script>
 
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
   name: 'Login',
   props: {
@@ -50,7 +50,7 @@ export default {
   },
   data () {
     return {
-      show_pw: false,
+      pw_show: false,
       password: 'Password',
       rules: {
         required: value => !!value || 'Required.',
@@ -60,8 +60,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setPw', 'moveTo']),
-    ...mapActions(['login'])
+    ...mapMutations(['setPw'])
   }
 }
 </script>
@@ -79,5 +78,9 @@ a {
 .signup{
   display: block;
   margin-left: 79%;
+}
+
+.alert{
+  margin: 10px 10% 0 10%; padding: 5px 20px;
 }
 </style>
